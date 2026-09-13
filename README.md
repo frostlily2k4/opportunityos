@@ -13,7 +13,15 @@ Instead of simply returning a list of links, OpportunityOS:
 5. 📋 Generates an application checklist
 6. ✉️ Creates a tailored application draft
 
-### Example
+## 🌐 Live Demo
+
+**Try OpportunityOS:** https://opportunityos-nu.vercel.app/
+
+**GitHub:** https://github.com/frostlily2k4/opportunityos
+
+---
+
+## 💡 Example
 
 ```text
 "Find me 5 AI internships I can apply to this week"
@@ -44,42 +52,45 @@ The system intentionally does not automatically submit applications on third-par
 
 🧠 Agent Architecture
                     User Query
-                        │
-                        ▼
+                         │
+                         ▼
               ┌──────────────────┐
-              │   1. SEARCH      │
-              │   Tavily API     │
+              │    1. SEARCH     │
+              │    Tavily API    │
               └────────┬─────────┘
                        │
                        ▼
               ┌──────────────────┐
-              │   2. EXTRACT     │
-              │   Gemini         │
+              │    2. EXTRACT    │
+              │ Gemini 3.1       │
+              │ Flash-Lite       │
               └────────┬─────────┘
                        │
                        ▼
               ┌──────────────────┐
               │ 3. ELIGIBILITY   │
-              │   Gemini         │
+              │ Gemini 3.1       │
+              │ Flash-Lite       │
               └────────┬─────────┘
                        │
                        ▼
               ┌──────────────────┐
               │    4. SCORE      │
-              │   Gemini         │
+              │ Gemini 3.1       │
+              │ Flash-Lite       │
               └────────┬─────────┘
                        │
                        ▼
               ┌──────────────────┐
-              │    5. RANK       │
-              │    Top 5         │
+              │     5. RANK      │
+              │     Top 5        │
               └────────┬─────────┘
                        │
                        ▼
               ┌──────────────────┐
-              │     6. ACT       │
+              │      6. ACT      │
               │ Checklist +      │
-              │ Application Draft│
+              │ Application Draft │
               └────────┬─────────┘
                        │
                        ▼
@@ -95,8 +106,10 @@ FastAPI
 Python
 Async pipeline orchestration
 AI Reasoning
-Google Gemini 2.5 Flash
+Google Gemini 3.1 Flash-Lite
+
 Used for:
+
 Opportunity extraction
 Eligibility reasoning
 Opportunity scoring
@@ -104,7 +117,12 @@ Application checklist generation
 Tailored application draft generation
 Web Search
 Tavily API
+
 Used to search the live web and retrieve webpage content for the agent.
+
+Deployment
+Vercel — Frontend
+Render — Backend
 Reliability
 Local query caching
 Cached fallback when live search temporarily fails
@@ -189,10 +207,15 @@ For actionable opportunities, the agent generates an ordered checklist based on 
 Example:
 
 ☐ Verify student eligibility
+
 ☐ Prepare resume
+
 ☐ Prepare required project links
+
 ☐ Complete application form
+
 ☐ Review submitted information
+
 ☐ Submit before the deadline
 
 The checklist is generated from the opportunity information rather than blindly applying a generic template.
@@ -286,17 +309,21 @@ opportunityos/
         └── globals.css
 ⚙️ Local Setup
 1. Clone the repository
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone https://github.com/frostlily2k4/opportunityos.git
+
 cd opportunityos
 2. Create the Python environment
 Windows
 python -m venv .venv
+
 .venv\Scripts\activate
 macOS / Linux
 python3 -m venv .venv
+
 source .venv/bin/activate
 3. Install backend dependencies
 cd backend
+
 pip install -r requirements.txt
 4. Configure API keys
 
@@ -327,6 +354,7 @@ http://localhost:8000
 Open another terminal:
 
 cd frontend
+
 npm install
 7. Start the frontend
 npm run dev
@@ -343,13 +371,22 @@ OpportunityOS requires:
 
 Google Gemini
 
-Used for AI reasoning and structured generation.
+Used for:
+
+AI reasoning
+Structured extraction
+Eligibility analysis
+Opportunity scoring
+Application preparation
 
 Get a Gemini API key from Google's AI developer platform.
 
 Tavily
 
-Used for live web search and webpage content retrieval.
+Used for:
+
+Live web search
+Webpage content retrieval
 
 A Tavily API key is required for opportunity discovery.
 
@@ -404,8 +441,11 @@ Find me AI internships I can apply to this week
 Example:
 
 Education: B.Sc Artificial Intelligence & Machine Learning
+
 Skills: Python, Machine Learning, R
+
 Location: India
+
 Interests: AI, Data Science
 3. Run the agent
 
@@ -422,7 +462,7 @@ Score
 Act
 4. Review the results
 
-Each result shows:
+Each result can show:
 
 Fit score
 Eligibility
@@ -486,12 +526,12 @@ Build AI Agents That Read, Reason, and Act
 
 OpportunityOS demonstrates this through a multi-stage agent that:
 
-Reads live opportunity information →
-Reasons about eligibility and relevance →
-Acts by preparing the user for the application.
+Reads live opportunity information
+            ↓
+Reasons about eligibility and relevance
+            ↓
+Acts by preparing the user for the application
 
-License
+📄 License
 
 This project was created as a hackathon prototype.
-
-
