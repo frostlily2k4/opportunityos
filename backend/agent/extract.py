@@ -1,9 +1,12 @@
 """
 Stage 2: Extract.
-Turns messy webpage text into a structured opportunity record.
+
+Uses Anakin to read live opportunity webpages and Gemini to turn
+the webpage content into a structured opportunity record.
 """
 
 from .llm import call_claude_json
+from .anakin import scrape_with_anakin
 
 
 SYSTEM = """
@@ -37,6 +40,35 @@ IMPORTANT:
 
 def extract_details(raw: dict) -> dict:
 
+    # ============================================================
+    # READ THE LIVE PAGE WITH ANAKIN
+    # ============================================================
+
+    try:
+
+        page_content = scrape_with_anakin(
+            raw["url"]
+        )
+
+        content_source = "Anakin URL Scraper"
+
+    except Exception as exc:
+
+        print(
+            f"Anakin scrape failed for "
+            f"{raw['url']}: {exc}"
+        )
+
+        # If Anakin cannot read the page, use the content
+        # already returned by Tavily as a fallback.
+        page_content = raw["content"]
+
+        content_source = "Tavily fallback"
+
+    # ============================================================
+    # EXTRACT STRUCTURED OPPORTUNITY DATA WITH GEMINI
+    # ============================================================
+
     user = f"""
 Page title:
 {raw['title']}
@@ -46,8 +78,11 @@ Page URL:
 
 Page content:
 ---
-{raw['content']}
+{page_content[:12000]}
 ---
+
+Content source:
+{content_source}
 
 Return ONLY valid JSON using this structure:
 
@@ -80,10 +115,27 @@ Rules:
 - summary must be exactly two concise sentences.
 """
 
-    result = call_claude_json(SYSTEM, user)
+    result = call_claude_json(
+        SYSTEM,
+        user
+    )
 
-    result.setdefault("is_specific_opportunity", False)
-    result.setdefault("apply_url", raw["url"])
+    # ============================================================
+    # SAFETY DEFAULTS
+    # ============================================================
+
+    result.setdefault(
+        "is_specific_opportunity",
+        False
+    )
+
+    result.setdefault(
+        "apply_url",
+        raw["url"]
+    )
+
     result["source_url"] = raw["url"]
+
+    result["content_source"] = content_source
 
     return result

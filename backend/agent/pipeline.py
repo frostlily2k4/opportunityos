@@ -103,7 +103,7 @@ async def run_pipeline_stream(query: str, profile: dict):
         "stage": "extract",
         "status": "running",
         "message": (
-            "Reading pages and extracting opportunity details..."
+            "Reading live pages with Anakin and extracting opportunity details..."
         )
     }
 
