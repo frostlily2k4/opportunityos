@@ -17,7 +17,7 @@ from google import genai
 _client = None
 
 # Gemini model used for the hackathon prototype.
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-3.1-flash-lite"
 
 
 def _get_client():
